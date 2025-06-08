@@ -1,15 +1,9 @@
-DO $$
-BEGIN
-  FOR i IN 1..100000 LOOP
-    INSERT INTO students(name, surname, date_of_birth, primary_skill, created_datetime, updated_datetime)
-    VALUES (
-      'Name' || i,
-      'Surname' || i,
-      date '2000-01-01' + (random() * 3650)::int,
-      'Skill' || (i % 10),
-      now(),
-      now()
-    );
-  END LOOP;
-END
-$$;
+INSERT INTO students(name, surname, date_of_birth, primary_skill, created_datetime, updated_datetime)
+SELECT
+  'Name' || gs::text AS name,
+  'Surname' || gs::text AS surname,
+  date '1990-01-01' + (random() * 10000)::int AS date_of_birth,
+  'Skill' || (gs % 10)::text AS primary_skill,
+  now() AS created_datetime,
+  now() AS updated_datetime
+FROM generate_series(1, 100000) gs;
